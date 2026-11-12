@@ -58,7 +58,7 @@ Quem chama o ms-produtos:
 Na nuvem os dois se identificam com o cabeçalho `x-api-key` (variável `INTERNAL_API_KEY`).
 
 Os contratos entre os serviços (campos, rotas, códigos de erro) ficam no repositório
-[`pjbl-arquitetura`](https://github.com/{{GITHUB_USER}}/pjbl-arquitetura), em `docs/contratos.md`.
+[`pjbl-arquitetura`](https://github.com/devinigarcia/pjbl-arquitetura), em `docs/contratos.md`.
 
 ## Tecnologias
 
@@ -292,7 +292,7 @@ O arquivo [`.env.example`](.env.example) tem todas elas com valores fictícios. 
 Pré-requisito: **Node.js 22 ou mais novo** (a imagem Docker e o CI usam o 22; nas nossas máquinas rodamos com o 24).
 
 ```bash
-git clone https://github.com/{{GITHUB_USER}}/pjbl-ms-produtos.git
+git clone https://github.com/devinigarcia/pjbl-ms-produtos.git
 cd pjbl-ms-produtos
 npm install
 ```
@@ -347,7 +347,7 @@ Para simular o comportamento da nuvem, defina também `INTERNAL_API_KEY` no `.en
 | `npm run typecheck` | Checagem de tipos sem gerar arquivos. |
 
 Para rodar o projeto inteiro (front, gateway, BFF, os dois microserviços e a Function), veja o repositório
-[`pjbl-arquitetura`](https://github.com/{{GITHUB_USER}}/pjbl-arquitetura).
+[`pjbl-arquitetura`](https://github.com/devinigarcia/pjbl-arquitetura).
 
 ## Testes
 
@@ -487,7 +487,7 @@ Se os secrets não existirem o job não falha: ele só avisa (warning) e pula a 
 | OpenAPI (JSON) | {{URL_MS_PRODUTOS}}/openapi.json |
 | Health | {{URL_MS_PRODUTOS}}/health |
 | Imagem no Docker Hub | https://hub.docker.com/r/{{DOCKERHUB_USER}}/pjbl-ms-produtos |
-| Frontend | {{URL_FRONTEND}} |
+| Frontend | https://devinigarcia.github.io/pjbl-microfrontend |
 | API Gateway | {{URL_GATEWAY}} |
 | Swagger do BFF | {{URL_BFF}}/docs |
 | Vídeo de apresentação | {{URL_VIDEO}} |
@@ -498,11 +498,11 @@ de testar; `/health`, `/docs` e `/openapi.json` são abertos.
 
 Os outros repositórios do projeto:
 
-- [pjbl-microfrontend](https://github.com/{{GITHUB_USER}}/pjbl-microfrontend)
-- [pjbl-bff](https://github.com/{{GITHUB_USER}}/pjbl-bff)
-- [pjbl-ms-pedidos](https://github.com/{{GITHUB_USER}}/pjbl-ms-pedidos)
-- [pjbl-function](https://github.com/{{GITHUB_USER}}/pjbl-function)
-- [pjbl-arquitetura](https://github.com/{{GITHUB_USER}}/pjbl-arquitetura) (ARC42, C4, contratos, scripts de deploy)
+- [pjbl-microfrontend](https://github.com/devinigarcia/pjbl-microfrontend)
+- [pjbl-bff](https://github.com/devinigarcia/pjbl-bff)
+- [pjbl-ms-pedidos](https://github.com/devinigarcia/pjbl-ms-pedidos)
+- [pjbl-function](https://github.com/devinigarcia/pjbl-function)
+- [pjbl-arquitetura](https://github.com/devinigarcia/pjbl-arquitetura) (ARC42, C4, contratos, scripts de deploy)
 
 ## Alunos
 
