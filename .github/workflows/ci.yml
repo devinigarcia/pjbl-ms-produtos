@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: pjbl-ms-produtos
+
+jobs:
+  test:
+    name: Testes e build
+    runs-on: ubuntu-latest
+    env:
+      # pasta fixa para o mongod do mongodb-memory-server, assim dá para guardar em cache
+      MONGOMS_DOWNLOAD_DIR: ${{ github.workspace }}/.mongodb-binaries
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Cache do binário do MongoDB (testes de integração)
+        uses: actions/cache@v4
+        with:
+          path: .mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Checagem de tipos
+        run: npm run typecheck
+
+      - name: Testes (unitários, arquitetura e integração)
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  docker:
+    name: Imagem Docker (Docker Hub)
+    needs: test
+    # Pull request só roda os testes; a imagem é publicada nos pushes para a main.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: Conferir se os secrets do Docker Hub existem
+        id: secrets
+        run: |
+          if [ -z "$DOCKERHUB_USERNAME" ] || [ -z "$DOCKERHUB_TOKEN" ]; then
+            echo "::warning::Secrets DOCKERHUB_USERNAME/DOCKERHUB_TOKEN não configurados: a imagem não foi publicada."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.available == 'true'
+
+      - name: Tag com o hash curto do commit
+        id: vars
+        if: steps.secrets.outputs.available == 'true'
+        run: echo "sha=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+        if: steps.secrets.outputs.available == 'true'
+
+      - uses: docker/login-action@v3
+        if: steps.secrets.outputs.available == 'true'
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build e push
+        if: steps.secrets.outputs.available == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:v1
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

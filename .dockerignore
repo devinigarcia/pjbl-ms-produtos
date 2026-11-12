@@ -1,0 +1,18 @@
+node_modules
+dist
+coverage
+tests
+.git
+.github
+.vscode
+.idea
+.mongodb-binaries
+*.log
+*.md
+Dockerfile
+.dockerignore
+vitest.config.ts
+
+# segredos nunca entram na imagem: as variáveis são passadas na hora de rodar
+.env
+.env.*
