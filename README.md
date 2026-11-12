@@ -8,8 +8,8 @@ Além do CRUD ele controla o estoque por **movimentações** (entradas e saídas
 a eventos do projeto termina: quando um pedido é criado ou cancelado no `ms-pedidos`, uma Azure Function consome o
 evento e chama este serviço para baixar ou devolver o estoque.
 
-- Swagger na nuvem: {{URL_MS_PRODUTOS}}/docs
-- Imagem: `{{DOCKERHUB_USER}}/pjbl-ms-produtos:v1`
+- Swagger na nuvem: https://ms-produtos.agreeablesand-8dc3837e.brazilsouth.azurecontainerapps.io/docs
+- Imagem: `vinigarciaa/pjbl-ms-produtos:v1`
 
 ## Sumário
 
@@ -438,29 +438,29 @@ imagem final leva só o `dist/` e as dependências de produção, roda com o usu
 ### Comandos manuais
 
 ```bash
-docker build -t {{DOCKERHUB_USER}}/pjbl-ms-produtos:v1 .
+docker build -t vinigarciaa/pjbl-ms-produtos:v1 .
 docker login
-docker push {{DOCKERHUB_USER}}/pjbl-ms-produtos:v1
+docker push vinigarciaa/pjbl-ms-produtos:v1
 ```
 
 Para rodar a imagem:
 
 ```bash
 # com repositório em memória
-docker run --rm -p 3001:3001 {{DOCKERHUB_USER}}/pjbl-ms-produtos:v1
+docker run --rm -p 3001:3001 vinigarciaa/pjbl-ms-produtos:v1
 
 # com MongoDB (a connection string entra como variável, nunca vai dentro da imagem)
 docker run --rm -p 3001:3001 \
   -e MONGODB_URI="<connection string do Atlas>" \
   -e INTERNAL_API_KEY="<chave interna>" \
-  {{DOCKERHUB_USER}}/pjbl-ms-produtos:v1
+  vinigarciaa/pjbl-ms-produtos:v1
 ```
 
 **Sobre o nome da imagem.** O enunciado dá como exemplo `dockerhubuser/pjbl/bff:v1`, com um nível a mais
 (`pjbl/`). O Docker Hub não aceita esse formato: lá o nome de um repositório é sempre `usuario/repositorio`, sem
 namespace aninhado (isso existe em outros registries, como o Azure Container Registry e o GitHub Container
-Registry). Por isso levamos o "pjbl" para dentro do nome do repositório: `{{DOCKERHUB_USER}}/pjbl-ms-produtos:v1`,
-`{{DOCKERHUB_USER}}/pjbl-ms-pedidos:v1` e `{{DOCKERHUB_USER}}/pjbl-bff:v1`.
+Registry). Por isso levamos o "pjbl" para dentro do nome do repositório: `vinigarciaa/pjbl-ms-produtos:v1`,
+`vinigarciaa/pjbl-ms-pedidos:v1` e `vinigarciaa/pjbl-bff:v1`.
 
 ### Publicação pelo GitHub Actions
 
@@ -483,13 +483,13 @@ Se os secrets não existirem o job não falha: ele só avisa (warning) e pula a 
 
 | O quê | Link |
 |---|---|
-| Swagger do ms-produtos | {{URL_MS_PRODUTOS}}/docs |
-| OpenAPI (JSON) | {{URL_MS_PRODUTOS}}/openapi.json |
-| Health | {{URL_MS_PRODUTOS}}/health |
-| Imagem no Docker Hub | https://hub.docker.com/r/{{DOCKERHUB_USER}}/pjbl-ms-produtos |
+| Swagger do ms-produtos | https://ms-produtos.agreeablesand-8dc3837e.brazilsouth.azurecontainerapps.io/docs |
+| OpenAPI (JSON) | https://ms-produtos.agreeablesand-8dc3837e.brazilsouth.azurecontainerapps.io/openapi.json |
+| Health | https://ms-produtos.agreeablesand-8dc3837e.brazilsouth.azurecontainerapps.io/health |
+| Imagem no Docker Hub | https://hub.docker.com/r/vinigarciaa/pjbl-ms-produtos |
 | Frontend | https://devinigarcia.github.io/pjbl-microfrontend |
-| API Gateway | {{URL_GATEWAY}} |
-| Swagger do BFF | {{URL_BFF}}/docs |
+| API Gateway | https://apim-pjbl-0a42b2.azure-api.net/conecta |
+| Swagger do BFF | https://bff.agreeablesand-8dc3837e.brazilsouth.azurecontainerapps.io/docs |
 | Vídeo de apresentação | {{URL_VIDEO}} |
 
 Na nuvem o serviço roda no Azure Container Apps a partir da imagem do Docker Hub, com o MongoDB Atlas (M0) como
