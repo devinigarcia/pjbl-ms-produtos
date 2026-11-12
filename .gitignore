@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+
+# variáveis de ambiente reais nunca vão para o repositório
+.env
+.env.*
+!.env.example
+
+# binário do mongod baixado pelo mongodb-memory-server (CI)
+.mongodb-binaries/
+
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
