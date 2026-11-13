@@ -490,7 +490,7 @@ Se os secrets não existirem o job não falha: ele só avisa (warning) e pula a 
 | Frontend | https://devinigarcia.github.io/pjbl-microfrontend |
 | API Gateway | https://apim-pjbl-0a42b2.azure-api.net/conecta |
 | Swagger do BFF | https://bff.agreeablesand-8dc3837e.brazilsouth.azurecontainerapps.io/docs |
-| Vídeo de apresentação | {{URL_VIDEO}} |
+| Vídeo de apresentação | https://youtu.be/TpbhGoSWqI8 |
 
 Na nuvem o serviço roda no Azure Container Apps a partir da imagem do Docker Hub, com o MongoDB Atlas (M0) como
 banco. As rotas de negócio pedem `x-api-key`, então no Swagger publicado é preciso clicar em **Authorize** antes
